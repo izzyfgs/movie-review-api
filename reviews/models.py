@@ -11,3 +11,15 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.movie_title} - {self.user.username}"
+    
+    from django.contrib.auth.models import User
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie_title = models.CharField(max_length=255)
+    content = models.TextField()
+    rating = models.PositiveSmallIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    
+
