@@ -41,3 +41,29 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def get_likes_count(self, obj):
         return obj.likes.count()
+
+from rest_framework import serializers
+from .models import Review
+
+class ReviewSerializer(serializers.ModelSerializer):
+    likes_count = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()  # <-- reuse field name
+
+    class Meta:
+        model = Review
+        fields = [
+            "id",
+            "movie_title",
+            "review_content",
+            "rating",
+            "created_date",
+            "likes_count",
+            "comments",  # now just the count
+        ]
+
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+
+    def get_comments(self, obj):
+        return obj.comments.count()  # return integer instead of list
+
