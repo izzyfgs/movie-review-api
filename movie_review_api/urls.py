@@ -14,15 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
 from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('users.urls')),  # <-- registration endpoint
-    path('api/reviews/', include('reviews.urls')),  # your review API
+    # Keep this one as your primary API path
+    path('', include('users.urls')),
+    path('api/reviews/', include('reviews.urls')),  
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include('users.urls')), 
-
+    # REMOVE OR COMMENT OUT the line below to avoid confusion
+    # path('', include('users.urls')), 
 ]
