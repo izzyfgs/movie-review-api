@@ -73,9 +73,13 @@ class CommentListCreateView(generics.ListCreateAPIView):
 
 
 # Like/unlike a review
-class ReviewLikeToggleView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
 
+
+
+from rest_framework.authentication import TokenAuthentication
+class ReviewLikeToggleView(APIView):
+    authentication_classes = [TokenAuthentication]  # <-- Add this line
+    permission_classes = [permissions.IsAuthenticated]
     def post(self, request, pk):
         review = generics.get_object_or_404(Review, pk=pk)
         user = request.user
