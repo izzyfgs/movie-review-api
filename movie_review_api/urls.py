@@ -17,10 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/reviews/', include('reviews.urls')),  # your reviews endpoints
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),  # THIS IS THE TOKEN LOGIN ENDPOINT
+    path('api/users/', include('users.urls')),  # <-- registration endpoint
+    path('api/reviews/', include('reviews.urls')),  # your review API
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('', include('users.urls')), 
+
 ]

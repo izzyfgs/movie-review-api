@@ -1,44 +1,25 @@
-from django.shortcuts import render
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from .serializers import RegisterSerializer
 
-from rest_framework import generics
-from django.contrib.auth.models import User
-from .serializers import UserSerializer
+class RegisterView(generics.CreateAPIView):
+    # This tells DRF which fields (username, email, password) to display
+    serializer_class = RegisterSerializer
+    
+    # This allows users who aren't logged in to see and use the form
+    permission_classes = [AllowAny]
 
-class UserCreateView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-import re
-from rest_framework.serializers import ModelSerializer, ValidationError
-from django.contrib.auth.models import User
-
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def validate_password(self, value):
-        """
-        Ensure password has at least one letter, one number, and one symbol
-        """
-        if len(value) < 8:
-            raise ValidationError("Password must be at least 8 characters long.")
-        if not re.search(r'[A-Za-z]', value):
-            raise ValidationError("Password must contain at least one letter.")
-        if not re.search(r'\d', value):
-            raise ValidationError("Password must contain at least one number.")
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', value):
-            raise ValidationError("Password must contain at least one special character.")
-        return value
-
-    def create(self, validated_data):
-        user = User(
-            username=validated_data['username'],
-            email=validated_data['email']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
-
-
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({
+                "user": {
+                    "username": user.username,
+                    "email": user.email
+                },
+                "message": "User created successfully. You can now login."
+            }, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -26,8 +26,13 @@ SECRET_KEY = 'django-insecure-l4c&53^3uats60s=)jmbq8&#o5x279*h8gkjnxy#zj8rghe(!w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['israelmalachy.pythonanywhere.com']
+# For local development, ensure these are present
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+
+import os
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'fallback-secret-key')
 
 # Application definition
 
