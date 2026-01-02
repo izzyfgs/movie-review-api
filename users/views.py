@@ -1,13 +1,13 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from .serializers import RegisterSerializer
+# CHANGE THIS: Import UserSerializer instead of RegisterSerializer
+from .serializers import UserSerializer 
 
 class RegisterView(generics.CreateAPIView):
-    # This tells DRF which fields (username, email, password) to display
-    serializer_class = RegisterSerializer
+    # CHANGE THIS: Point to UserSerializer
+    serializer_class = UserSerializer
     
-    # This allows users who aren't logged in to see and use the form
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
