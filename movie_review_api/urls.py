@@ -19,10 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Keep this one as your primary API path
     path('', include('users.urls')),
-    path('api/reviews/', include('reviews.urls')),  
+    path('api/reviews/', include('reviews.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # REMOVE OR COMMENT OUT the line below to avoid confusion
-    # path('', include('users.urls')), 
 ]

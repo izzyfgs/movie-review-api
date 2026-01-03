@@ -93,3 +93,18 @@ class ReviewLikeToggleView(APIView):
             {'liked': liked, 'likes_count': review.likes.count()},
             status=status.HTTP_200_OK
         )
+from django.shortcuts import render
+
+# views.py
+from django.http import HttpResponse
+
+def api_home(request):
+    return HttpResponse("""
+        <h1>Welcome to the Movie Review API</h1>
+        <ul>
+            <li><a href="/login/">Login (Token Auth)</a></li>
+            <li><a href="/register/">Register</a></li>
+            <li><a href="/api/reviews/">Reviews Endpoint</a></li>
+            <li><a href="/admin/">Admin</a></li>
+        </ul>
+    """)

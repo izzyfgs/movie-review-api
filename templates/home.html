@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Review API</title>
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+  <main class="card">
+    <h1>Movie Review API</h1>
+    <p class="subtitle">Quick access to your main routes</p>
+
+    <div class="btn-grid">
+      <a class="btn" href="/admin/">Admin Panel</a>
+      <a class="btn" href="/register/">Register</a>
+      <a class="btn" href="/api-auth/login/">Login</a>
+      <a class="btn" href="/api/reviews/">Create Review</a>
+    </div>
+
+    <p class="note">
+      Tip: “Create Review” opens the reviews endpoint (GET/POST).
+    </p>
+  </main>
+</body>
+</html>
