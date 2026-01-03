@@ -18,11 +18,8 @@ Updated: January 3, 2026
 from pathlib import Path
 import os
 
-# 1. Base Directory
-BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 2. Security Settings
-# In 2026, we prioritize environment variables for the Secret Key
+BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-l4c&53^3uats60s=)jmbq8&#o5x279*h8gkjnxy#zj8rghe(!w')
 
 DEBUG = True
@@ -36,7 +33,6 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = ['https://israelmalachy.pythonanywhere.com']
 
-# 3. Application Definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,10 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Your Apps
     'reviews',
     'users',
-    # Third Party
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -55,7 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Best for 2026 static files
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,8 +77,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'movie_review_api.wsgi.application'
-
-# 4. Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -92,7 +84,6 @@ DATABASES = {
     }
 }
 
-# 5. Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -100,18 +91,16 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# 6. Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# 7. Static Files
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# 8. Django REST Framework Configuration (Consolidated)
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
