@@ -7,7 +7,6 @@ from .models import Review, Comment
 from .serializers import ReviewSerializer, CommentSerializer
 
 
-# Custom FilterSet for browsable API input fields
 class ReviewFilter(FilterSet):
     rating = NumberFilter(field_name='rating', lookup_expr='exact')
 
@@ -15,25 +14,21 @@ class ReviewFilter(FilterSet):
         model = Review
         fields = ['movie_title', 'rating']
 
-
-# Permission: only owner can edit/delete
 class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.user == request.user
-
-
-# List and create reviews
+    
 class ReviewListCreateView(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_class = ReviewFilter      # <-- custom filter for rating input
-    search_fields = ['movie_title']     # search bar for movie title
+    filterset_class = ReviewFilter   
+    search_fields = ['movie_title']  
     ordering_fields = ['rating', 'created_date', 'likes_count', 'comments_count']
-    template_name = None                 # avoids TemplateDoesNotExist error
+    template_name = None                
 
     def get_queryset(self):
         return Review.objects.annotate(
@@ -44,8 +39,6 @@ class ReviewListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-
-# Retrieve, update, delete a review
 class ReviewRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsOwnerOrReadOnly]
@@ -55,9 +48,6 @@ class ReviewRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
             likes_count=Count('likes'),
             comments_count=Count('comments')
         )
-
-
-# List and create comments for a review
 class CommentListCreateView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -71,14 +61,9 @@ class CommentListCreateView(generics.ListCreateAPIView):
         review = generics.get_object_or_404(Review, id=review_id)
         serializer.save(user=self.request.user, review=review)
 
-
-# Like/unlike a review
-
-
-
 from rest_framework.authentication import TokenAuthentication
 class ReviewLikeToggleView(APIView):
-    authentication_classes = [TokenAuthentication]  # <-- Add this line
+    authentication_classes = [TokenAuthentication]  
     permission_classes = [permissions.IsAuthenticated]
     def post(self, request, pk):
         review = generics.get_object_or_404(Review, pk=pk)
@@ -94,8 +79,6 @@ class ReviewLikeToggleView(APIView):
             status=status.HTTP_200_OK
         )
 from django.shortcuts import render
-
-# views.py
 from django.http import HttpResponse
 
 def api_home(request):

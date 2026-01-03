@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Review
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField(read_only=True)  # shows username instead of ID
+    user = serializers.StringRelatedField(read_only=True)  
 
     class Meta:
         model = Review
@@ -33,7 +33,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     likes_count = serializers.SerializerMethodField()
-    comments = CommentSerializer(many=True, read_only=True)  # Nested comments
+    comments = CommentSerializer(many=True, read_only=True) 
 
     class Meta:
         model = Review
@@ -47,7 +47,7 @@ from .models import Review
 
 class ReviewSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
-    comments = serializers.SerializerMethodField()  # <-- reuse field name
+    comments = serializers.SerializerMethodField()  
 
     class Meta:
         model = Review
@@ -58,12 +58,12 @@ class ReviewSerializer(serializers.ModelSerializer):
             "rating",
             "created_date",
             "likes_count",
-            "comments",  # now just the count
+            "comments",  
         ]
 
     def get_likes_count(self, obj):
         return obj.likes.count()
 
     def get_comments(self, obj):
-        return obj.comments.count()  # return integer instead of list
+        return obj.comments.count()  
 
